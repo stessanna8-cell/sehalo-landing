@@ -127,7 +127,6 @@
     /* CARDS GRID */
     .grid { display: grid; gap: 20px; }
     .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
     .card {
       background: var(--card);
@@ -182,7 +181,7 @@
       font-weight: 600;
     }
 
-    /* SUBSCRIPTION TABLE */
+    /* PLANS */
     .plans {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -298,19 +297,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: gap;
+      flex-wrap: wrap;
       gap: 16px;
     }
 
+    footer .logo { font-size: 18px; }
     footer p { font-size: 13px; color: var(--muted); }
-
-    footer a {
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-    }
-
-    footer a:hover { color: var(--purple-light); }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--purple-light); }
 
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
@@ -337,44 +332,37 @@
 <section>
   <p class="section-title">The Application</p>
   <div class="grid grid-2">
-
     <div class="card">
       <div class="card-icon icon-purple">🏠</div>
       <h3>Private Rooms (Mansion Metaphor)</h3>
       <p>Users create private "rooms" — intimate spaces for close connections. No public browsing, no algorithmic feeds. Every conversation happens in a curated, private environment.</p>
     </div>
-
     <div class="card">
       <div class="card-icon icon-teal">💬</div>
       <h3>Messaging &amp; Video Calls</h3>
       <p>Real-time encrypted messaging and group video calls powered by Agora SDK, plus peer-to-peer calls via WebRTC — all within private rooms.</p>
     </div>
-
     <div class="card">
       <div class="card-icon icon-blue">🎬</div>
       <h3>Watch Together</h3>
       <p>Synchronized video watching inside rooms. Members stream content together in real time — SEHALO Library content, YouTube, or personal uploads.</p>
     </div>
-
     <div class="card">
       <div class="card-icon icon-pink">📖</div>
       <h3>Stories</h3>
       <p>Share ephemeral photo and video stories within your private rooms, visible only to members — not public timelines.</p>
     </div>
-
     <div class="card">
       <div class="card-icon icon-amber">🎮</div>
       <h3>In-App Games</h3>
       <p>Multiplayer games available inside rooms to bring people closer through shared interactive experiences.</p>
     </div>
-
     <div class="card">
       <div class="card-icon icon-green">🌸</div>
       <h3>Flower Shop (Virtual Gifting)</h3>
       <p>Users send real flower arrangements to other users. The sender selects an arrangement; the recipient confirms their delivery address privately. SEHALO facilitates fulfillment.</p>
       <div class="card-price">One-time purchase per order</div>
     </div>
-
   </div>
 </section>
 
@@ -382,7 +370,6 @@
 <section>
   <p class="section-title">Premium Subscriptions</p>
   <div class="plans">
-
     <div class="plan">
       <p class="plan-name">Free</p>
       <p class="plan-price">$0 <span>/ month</span></p>
@@ -394,7 +381,6 @@
         <li>Unlimited private rooms</li>
       </ul>
     </div>
-
     <div class="plan featured">
       <div class="plan-badge">Most Popular</div>
       <p class="plan-name">Individual</p>
@@ -407,7 +393,6 @@
         <li>No per-ticket purchases needed</li>
       </ul>
     </div>
-
     <div class="plan">
       <p class="plan-name">Duo</p>
       <p class="plan-price">$12.99 <span>/ month</span></p>
@@ -419,7 +404,6 @@
         <li>Shared billing, separate accounts</li>
       </ul>
     </div>
-
     <div class="plan">
       <p class="plan-name">Family</p>
       <p class="plan-price">$25.99 <span>/ month</span></p>
@@ -431,10 +415,8 @@
         <li>All paid content included</li>
       </ul>
     </div>
-
   </div>
 
-  <!-- Content Tickets -->
   <p class="section-title">Content Tickets</p>
   <div class="grid grid-2">
     <div class="card">
@@ -473,7 +455,7 @@
       <p>iOS &amp; Android (React Native)</p>
     </div>
     <div class="info-item">
-      <label>Support Email</label>
+      <label>Contact Email</label>
       <p>info@sehalo.app</p>
     </div>
   </div>
@@ -481,11 +463,13 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 SEHALO Inc. All rights reserved.</p>
-  <div style="display:flex;gap:24px;">
-    <a href="https://sehalo.app/privacy">Privacy Policy</a>
-    <a href="https://sehalo.app/terms">Terms of Service</a>
-    <a href="mailto:support@sehalo.app">Contact</a>
+  <a class="logo" href="/">SEHALO</a>
+  <p>© 2026 SEHALO Inc. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="/support.html">Support</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+    <a href="mailto:info@sehalo.app">info@sehalo.app</a>
   </div>
 </footer>
 
