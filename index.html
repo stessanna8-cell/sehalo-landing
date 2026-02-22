@@ -28,7 +28,11 @@
       border-bottom: 1px solid var(--border);
     }
     .logo { font-size: 22px; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .nav-cta { background: var(--gradient); color: #fff; border: none; padding: 10px 22px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { color: var(--muted); font-size: 15px; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--text); font-weight: 600; }
+    .nav-cta { background: var(--gradient); color: #fff !important; border: none; padding: 10px 22px; border-radius: 100px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
 
     /* HERO */
     .hero {
@@ -80,6 +84,29 @@
     .feature-icon { font-size: 32px; margin-bottom: 16px; }
     .feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
     .feature-card p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+    /* PRICING TEASER */
+    .pricing-teaser {
+      background: var(--card); border: 1px solid var(--border); border-radius: 28px;
+      padding: 64px 48px; margin-top: 64px; display: flex;
+      align-items: center; justify-content: space-between; gap: 48px; flex-wrap: wrap;
+      position: relative; overflow: hidden;
+    }
+    .pricing-teaser::before {
+      content: ''; position: absolute; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,106,247,0.1) 0%, transparent 70%);
+      right: -100px; top: 50%; transform: translateY(-50%);
+    }
+    .pricing-teaser-text { flex: 1; min-width: 260px; position: relative; }
+    .pricing-teaser-text h3 { font-size: clamp(24px, 3vw, 36px); font-weight: 800; margin-bottom: 12px; }
+    .pricing-teaser-text p { color: var(--muted); font-size: 16px; max-width: 440px; margin-bottom: 28px; }
+    .pricing-pills { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .pill {
+      background: rgba(124,106,247,0.12); border: 1px solid rgba(124,106,247,0.25);
+      border-radius: 100px; padding: 8px 18px; font-size: 14px; font-weight: 600;
+    }
+    .pill span { color: var(--accent2); }
+    .pricing-teaser-cta { position: relative; }
 
     /* FOUNDER */
     .founder-wrap {
@@ -143,11 +170,16 @@
     .footer-links a { color: var(--muted); font-size: 14px; text-decoration: none; transition: color .2s; }
     .footer-links a:hover { color: var(--text); }
 
+    @media (max-width: 768px) {
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
       .founder-wrap { padding: 40px 28px; gap: 32px; }
       .footer-cta { padding: 60px 24px; margin: 0 16px 60px; }
       footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+      .pricing-teaser { padding: 40px 28px; }
     }
   </style>
 </head>
@@ -156,7 +188,13 @@
 <!-- NAV -->
 <nav>
   <div class="logo">SEHALO</div>
-  <a href="#notify" class="nav-cta">Get Early Access</a>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#features">Features</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#notify" class="nav-cta">Get Early Access</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -244,6 +282,28 @@
 
 <hr class="divider" />
 
+<!-- PRICING TEASER -->
+<section id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Simple, honest pricing.</h2>
+  <p class="section-sub">Everything in SEHALO is free — rooms, calls, games, and more. Subscriptions unlock the full content library.</p>
+  <div class="pricing-teaser">
+    <div class="pricing-teaser-text">
+      <h3>Start free.<br>Upgrade when ready.</h3>
+      <p>All core features are free forever. Premium plans unlock the full SEHALO content library for individuals, duos, and families.</p>
+      <div class="pricing-pills">
+        <div class="pill">Free <span>$0/mo</span></div>
+        <div class="pill">Individual <span>$7.99/mo</span></div>
+        <div class="pill">Duo <span>$12.99/mo</span></div>
+        <div class="pill">Family <span>$25.99/mo</span></div>
+      </div>
+      <a href="/pricing.html" class="btn-primary">See Full Pricing →</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
 <!-- FOUNDER -->
 <section id="about">
   <div class="section-label">About the Founder</div>
@@ -275,7 +335,7 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is it free to use? <span class="arrow">+</span></button>
-      <div class="faq-a">Yes — SEHALO is free to download with all core features included. Premium subscription plans will unlock the full SEHALO content library for individuals, duos, and families.</div>
+      <div class="faq-a">Yes — SEHALO is free to download with all core features included. Premium subscription plans unlock the full SEHALO content library for individuals, duos, and families.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">When does it launch? <span class="arrow">+</span></button>
@@ -304,6 +364,8 @@
   <div class="logo">SEHALO</div>
   <p>© 2026 SEHALO Inc. All rights reserved.</p>
   <div class="footer-links">
+    <a href="/pricing.html">Pricing</a>
+    <a href="/products.html">Products & Services</a>
     <a href="/support.html">Support</a>
     <a href="/privacy.html">Privacy Policy</a>
     <a href="/terms.html">Terms of Service</a>
