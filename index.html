@@ -159,8 +159,20 @@
     }
     .notify-form input:focus { border-color: var(--accent); }
     .notify-form input::placeholder { color: var(--muted); }
-    .notify-form button { background: var(--gradient); color: #fff; border: none; padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 700; cursor: pointer; }
-    .success-msg { color: #a3e635; font-size: 15px; margin-top: 12px; display: none; }
+    .notify-form button {
+      background: var(--gradient); color: #fff; border: none; padding: 14px 28px;
+      border-radius: 100px; font-size: 15px; font-weight: 700; cursor: pointer;
+      min-width: 120px; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .notify-form button:disabled { opacity: 0.7; cursor: not-allowed; }
+    .spinner {
+      width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success-msg { color: #a3e635; font-size: 15px; margin-top: 16px; display: none; }
+    .error-msg { color: #f87171; font-size: 14px; margin-top: 12px; display: none; }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 32px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
@@ -191,7 +203,6 @@
   <div class="nav-links">
     <a href="#how-it-works">How It Works</a>
     <a href="#features">Features</a>
-    <a href="/pricing.html">Pricing</a>
     <a href="#faq">FAQ</a>
     <a href="#notify" class="nav-cta">Get Early Access</a>
   </div>
@@ -282,28 +293,6 @@
 
 <hr class="divider" />
 
-<!-- PRICING TEASER -->
-<section id="pricing">
-  <div class="section-label">Pricing</div>
-  <h2 class="section-title">Simple, honest pricing.</h2>
-  <p class="section-sub">Everything in SEHALO is free — rooms, calls, games, and more. Subscriptions unlock the full content library.</p>
-  <div class="pricing-teaser">
-    <div class="pricing-teaser-text">
-      <h3>Start free.<br>Upgrade when ready.</h3>
-      <p>All core features are free forever. Premium plans unlock the full SEHALO content library for individuals, duos, and families.</p>
-      <div class="pricing-pills">
-        <div class="pill">Free <span>$0/mo</span></div>
-        <div class="pill">Individual <span>$7.99/mo</span></div>
-        <div class="pill">Duo <span>$12.99/mo</span></div>
-        <div class="pill">Family <span>$25.99/mo</span></div>
-      </div>
-      <a href="/pricing.html" class="btn-primary">See Full Pricing →</a>
-    </div>
-  </div>
-</section>
-
-<hr class="divider" />
-
 <!-- FOUNDER -->
 <section id="about">
   <div class="section-label">About the Founder</div>
@@ -354,9 +343,13 @@
   <p>Join the early access list and help shape what SEHALO becomes.</p>
   <div class="notify-form">
     <input type="email" id="email-input" placeholder="your@email.com" />
-    <button onclick="handleNotify()">Notify Me</button>
+    <button id="notify-btn" onclick="handleNotify()">
+      <span id="btn-text">Notify Me</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
   </div>
   <div class="success-msg" id="success-msg">✓ You're on the list! We'll be in touch.</div>
+  <div class="error-msg" id="error-msg">Something went wrong. Please try again.</div>
 </div>
 
 <!-- FOOTER -->
@@ -364,7 +357,6 @@
   <div class="logo">SEHALO</div>
   <p>© 2026 SEHALO Inc. All rights reserved.</p>
   <div class="footer-links">
-    <a href="/pricing.html">Pricing</a>
     <a href="/products.html">Products & Services</a>
     <a href="/support.html">Support</a>
     <a href="/privacy.html">Privacy Policy</a>
@@ -374,6 +366,7 @@
 </footer>
 
 <script>
+  // ─── FAQ ───
   function toggleFaq(btn) {
     const isOpen = btn.classList.contains('open');
     document.querySelectorAll('.faq-q').forEach(b => {
@@ -386,15 +379,52 @@
     }
   }
 
-  function handleNotify() {
-    const input = document.getElementById('email-input');
-    const msg = document.getElementById('success-msg');
-    if (input.value && input.value.includes('@')) {
-      input.style.display = 'none';
-      document.querySelector('.notify-form button').style.display = 'none';
-      msg.style.display = 'block';
-    } else {
+  // ─── NOTIFY ME (Formspree) ───
+  // 1. Go to https://formspree.io → New Form → copy your endpoint
+  // 2. Replace the URL below with your endpoint e.g. https://formspree.io/f/abcd1234
+  const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  async function handleNotify() {
+    const input   = document.getElementById('email-input');
+    const btn     = document.getElementById('notify-btn');
+    const btnText = document.getElementById('btn-text');
+    const spinner = document.getElementById('spinner');
+    const success = document.getElementById('success-msg');
+    const error   = document.getElementById('error-msg');
+
+    // Basic validation
+    if (!input.value || !input.value.includes('@')) {
       input.style.borderColor = '#f87171';
+      input.focus();
+      return;
+    }
+    input.style.borderColor = '';
+
+    // Loading state
+    btn.disabled  = true;
+    btnText.style.display = 'none';
+    spinner.style.display = 'block';
+    error.style.display   = 'none';
+
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email: input.value }),
+      });
+
+      if (res.ok) {
+        input.style.display   = 'none';
+        btn.style.display     = 'none';
+        success.style.display = 'block';
+      } else {
+        throw new Error('Non-OK response');
+      }
+    } catch (e) {
+      error.style.display = 'block';
+      btn.disabled        = false;
+      btnText.style.display = 'inline';
+      spinner.style.display = 'none';
     }
   }
 </script>
